@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificación: Diferenciación e IA en PR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Palette: "Logro Académico"
+           Gold: #D4AF37
+           Black: #1a1a1a
+           White: #ffffff
+           Soft Grey: #f4f4f4
+        */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4f4f4;
+            color: #1a1a1a;
+        }
+        .header-gold {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            border-bottom: 4px solid #D4AF37;
+        }
+        .cert-border {
+            border: 10px double #D4AF37;
+        }
+        .font-serif {
+            font-family: 'Cinzel', serif;
+        }
+        .btn-gold {
+            background-color: #D4AF37;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            background-color: #b8962d;
+            transform: translateY(-2px);
+        }
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <!-- Hero Header -->
+    <header class="header-gold text-white py-10 px-6 text-center shadow-2xl">
+        <h1 class="text-3xl md:text-5xl font-serif mb-2">Evaluación de Competencias</h1>
+        <p class="text-gold-400 font-light tracking-widest uppercase text-sm">Especialista en Educación Diferenciada, Autismo e IA</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto mt-10 px-4">
+        
+        <!-- Status & Progress -->
+        <div id="quiz-container" class="bg-white rounded-3xl shadow-xl p-8 mb-10 border border-gray-100">
+            <div id="quiz-intro" class="text-center">
+                <div class="text-5xl mb-4">🎓</div>
+                <h2 class="text-2xl font-bold mb-4">¿Estás listo para certificarte?</h2>
+                <p class="text-gray-600 mb-8 max-w-lg mx-auto">
+                    Este examen evalúa tu capacidad para integrar la Inteligencia Artificial y la Diferenciación en el aula puertorriqueña cumpliendo con la Ley 51.
+                </p>
+                <button onclick="startQuiz()" class="btn-gold px-10 py-4 rounded-full font-bold uppercase tracking-wider shadow-lg">Comenzar Evaluación</button>
+            </div>
+
+            <div id="quiz-content" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <span id="question-number" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Pregunta 1 de 5</span>
+                    <div class="w-24 bg-gray-100 h-2 rounded-full">
+                        <div id="progress-bar" class="bg-yellow-500 h-2 rounded-full" style="width: 20%"></div>
+                    </div>
+                </div>
+                
+                <h3 id="question-text" class="text-xl font-bold mb-8 text-gray-800">Cargando pregunta...</h3>
+                
+                <div id="options-container" class="grid grid-cols-1 gap-4">
+                    <!-- Options will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Result & Certificate Section (Hidden initially) -->
+        <div id="result-container" class="hidden space-y-10">
+            <div class="bg-white rounded-3xl shadow-xl p-8 text-center">
+                <h2 class="text-3xl font-black mb-4">Resultados Finales</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+                    <div class="chart-container">
+                        <canvas id="resultChart"></canvas>
+                    </div>
+                    <div class="text-left space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-2xl border-l-4 border-yellow-500">
+                            <p class="text-sm font-bold text-gray-500">Puntuación Total</p>
+                            <p id="final-score" class="text-4xl font-black text-gray-800">0%</p>
+                        </div>
+                        <p id="result-msg" class="text-gray-600 text-sm italic"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Visual -->
+            <div id="certificate" class="hidden bg-white p-2 rounded-lg shadow-2xl overflow-hidden">
+                <div class="cert-border p-10 text-center relative">
+                    <div class="absolute top-4 right-4 text-6xl opacity-10">📜</div>
+                    <h4 class="font-serif text-3xl mb-6 text-gray-800">Certificado de Logro</h4>
+                    <p class="text-gray-500 italic mb-2">Se otorga con distinción a:</p>
+                    <p class="text-2xl font-bold border-b-2 border-gray-200 inline-block px-10 mb-8">[Nombre del Docente]</p>
+                    <p class="text-gray-600 max-w-md mx-auto mb-10">
+                        Por haber completado satisfactoriamente la capacitación en <strong>Enseñanza Diferenciada e Integración de Inteligencia Artificial para el Trastorno del Espectro Autista</strong> bajo la normativa de Puerto Rico.
+                    </p>
+                    <div class="flex justify-around items-center">
+                        <div class="text-center">
+                            <div class="w-32 border-t border-gray-400 mt-10"></div>
+                            <p class="text-xs text-gray-400 mt-2">Firma del Facilitador</p>
+                        </div>
+                        <div class="w-20 h-20 bg-yellow-500 rounded-full flex items-center justify-center text-white font-black text-xl shadow-inner">
+                            PR
+                        </div>
+                        <div class="text-center">
+                            <div class="w-32 border-t border-gray-400 mt-10"></div>
+                            <p class="text-xs text-gray-400 mt-2">Sello de Excelencia</p>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="window.print()" class="w-full py-4 bg-gray-800 text-white font-bold hover:bg-black transition-colors">DESCARGAR CERTIFICADO (PDF)</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const questions = [
+            {
+                q: "Un estudiante con autismo muestra fatiga visual extrema. Según la Diferenciación, ¿qué elemento estás ajustando si cambias el libro por un audiolibro generado por IA?",
+                options: ["Contenido", "Proceso", "Ambiente", "Producto"],
+                correct: 1, // Proceso
+                feedback: "Correcto. El proceso es cómo el estudiante accede y procesa la información."
+            },
+            {
+                q: "¿Qué artículo de la Ley 51 de Puerto Rico protege el derecho a acomodos razonables en la educación?",
+                options: ["Artículo 1", "Artículo 5", "Artículo 10", "Artículo 15"],
+                correct: 1, // Artículo 5
+                feedback: "Exacto. El Artículo 5 establece la política pública de servicios integrales."
+            },
+            {
+                q: "Deseas crear una 'Historia Social' culturalmente relevante para PR usando IA. ¿Cuál es el prompt más efectivo?",
+                options: [
+                    "Escribe una historia sobre un niño en la escuela.",
+                    "Genera una historia social sobre ir a un festival en Puerto Rico para un niño con autismo, enfocada en ruidos de batucada.",
+                    "Haz un cuento sobre el autismo y Puerto Rico.",
+                    "Dibuja un niño con autismo comiendo una piragua."
+                ],
+                correct: 1,
+                feedback: "¡Muy bien! La especificidad y el contexto cultural (batucada) son claves para la efectividad."
+            },
+            {
+                q: "En una reunión de COMPU, un padre solicita que su hijo use una IA de voz-a-texto. ¿Bajo qué mandato legal se apoya?",
+                options: ["Solo política escolar", "Ley IDEA y Ley 51", "Ley de Tránsito", "No existe mandato"],
+                correct: 1,
+                feedback: "Correcto. Ambas leyes federales y estatales exigen considerar asistencia tecnológica."
+            },
+            {
+                q: "¿Cuál es el beneficio principal de usar Analítica de IA en el PEI?",
+                options: ["Reemplazar al maestro", "Dar notas automáticas", "Monitorear metas medibles en tiempo real", "Jugar videojuegos"],
+                correct: 2,
+                feedback: "Exacto. La IA ayuda a rastrear el progreso de metas específicas del PEI con precisión de datos."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userStats = [0, 0, 0]; // [Leyes, Diferenciación, IA]
+
+        function startQuiz() {
+            document.getElementById('quiz-intro').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-number').innerText = `Pregunta ${currentQuestion + 1} de ${questions.length}`;
+            document.getElementById('question-text').innerText = q.q;
+            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            
+            const optionsBox = document.getElementById('options-container');
+            optionsBox.innerHTML = '';
+            
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "p-4 text-left border-2 border-gray-100 rounded-2xl hover:border-yellow-500 hover:bg-yellow-50 transition-all font-medium text-gray-700";
+                btn.innerText = opt;
+                btn.onclick = () => handleAnswer(index);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(index) {
+            if (index === questions[currentQuestion].correct) {
+                score++;
+                // Update stats based on question category (simplified logic)
+                if (currentQuestion === 1 || currentQuestion === 3) userStats[0] += 33;
+                if (currentQuestion === 0 || currentQuestion === 4) userStats[1] += 33;
+                if (currentQuestion === 2 || currentQuestion === 4) userStats[2] += 33;
+            }
+            
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('result-container').classList.remove('hidden');
+            
+            const finalPercent = (score / questions.length) * 100;
+            document.getElementById('final-score').innerText = `${finalPercent}%`;
+            
+            if (finalPercent >= 80) {
+                document.getElementById('result-msg').innerText = "¡Felicidades! Has demostrado un dominio excepcional de las competencias inclusivas.";
+                document.getElementById('certificate').classList.remove('hidden');
+            } else {
+                document.getElementById('result-msg').innerText = "Has completado la evaluación. Te recomendamos repasar los módulos de IA y Leyes para obtener tu certificación.";
+            }
+
+            initResultChart();
+        }
+
+        function initResultChart() {
+            const ctx = document.getElementById('resultChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Leyes y Normativa', 'Diferenciación', 'Integración IA'],
+                    datasets: [{
+                        label: 'Tus Competencias',
+                        data: userStats,
+                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                        borderColor: '#D4AF37',
+                        pointBackgroundColor: '#1a1a1a'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: { suggestMin: 0, suggestMax: 100 }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
